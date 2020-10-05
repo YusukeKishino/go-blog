@@ -6,9 +6,11 @@
     {{ asset "vendor.js" }}
     {{ asset "application.js" }}
     {{ asset "application.css" }}
-  <title>go-blog</title>
+  <title>GoでBlogを作るBlog</title>
 </head>
 <body>
+{{ template "header" . }}
 {{ template "content" . }}
+{{ template "footer" . }}
 </body>
 </html>
