@@ -1,0 +1,8 @@
+development:
+  database_url: root@tcp(127.0.0.1)/go-blog_development?charset=utf8mb4&collation=utf8mb4_general_ci&parseTime=true&loc=Local
+
+test:
+  database_url: root@tcp(127.0.0.1)/go-blog_test?charset=utf8mb4&collation=utf8mb4_general_ci&parseTime=true&loc=Local
+
+production:
+  url:
