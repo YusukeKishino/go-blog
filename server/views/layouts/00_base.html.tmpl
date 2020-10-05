@@ -10,7 +10,26 @@
 </head>
 <body>
 {{ template "header" . }}
-{{ template "content" . }}
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column">
+        <div class="container">
+            {{ template "content" . }}
+        </div>
+      </div>
+      <div class="column is-one-quarter is-hidden-mobile">
+        <div class="menu">
+          <p class="menu-label">General</p>
+        </div>
+        <ul class="menu-list">
+          <li><a>Dashboard</a></li>
+          <li><a>Customers</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
 {{ template "footer" . }}
 </body>
 </html>
