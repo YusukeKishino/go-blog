@@ -1,0 +1,8 @@
+{{ define "subtitle" }}
+  {{ .post.Title }}
+{{ end }}
+{{ define "content" }}
+  <div class="container">
+    {{ md2HTML .post.Content }}
+  </div>
+{{ end }}

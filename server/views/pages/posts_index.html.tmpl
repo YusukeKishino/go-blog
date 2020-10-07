@@ -1,0 +1,26 @@
+{{ define "subtitle" }}
+  投稿一覧
+{{ end }}
+{{ define "content" }}
+  <div class="container">
+    <div class="columns is-multiline is-tablet">
+        {{ range $i, $post := .posts }}
+          <div class="column is-6">
+            <div class="card">
+              <div class="card-content">
+                <p class="title is-4">{{ $post.Title }}</p>
+              </div>
+              <footer class="card-footer">
+                <p class="card-footer-item">
+                  作成日時: {{ $post.CreatedAt.Format "2006-01-02 15:04:06" }}
+                </p>
+                <p class="card-footer-item">
+                  更新日時: {{ $post.UpdatedAt.Format "2006-01-02 15:04:06" }}
+                </p>
+              </footer>
+            </div>
+          </div>
+        {{ end }}
+    </div>
+  </div>
+{{ end }}

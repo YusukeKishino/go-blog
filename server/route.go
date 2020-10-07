@@ -11,8 +11,9 @@ import (
 
 type Controllers struct {
 	dig.In
-	Posts *controller.AdminPostsController
-	Login *controller.LoginController
+	AdminPosts *controller.AdminPostsController
+	Posts      *controller.PostsController
+	Login      *controller.LoginController
 }
 
 type Router struct {
@@ -32,17 +33,24 @@ func (r *Router) setRoutes(engine *gin.Engine) {
 	engine.GET("/", func(c *gin.Context) {
 		c.HTML(200, "index.html.tmpl", gin.H{})
 	})
+	posts := engine.Group("/posts")
+	{
+		posts.GET("/", r.controllers.Posts.Index)
+		posts.GET("/show/:id", r.controllers.Posts.Show)
+	}
 
 	engine.GET("/login", r.controllers.Login.Show)
 	engine.POST("/login", r.controllers.Login.Login)
 
 	adminGroup := engine.Group("/admin", middleware.AuthRequired)
-	posts := adminGroup.Group("/posts")
 	{
-		posts.GET("/", r.controllers.Posts.Index)
-		posts.GET("/new", r.controllers.Posts.New)
-		posts.GET("/show/:id", r.controllers.Posts.Show)
-		posts.GET("/edit/:id", r.controllers.Posts.Edit)
-		posts.POST("/:id", r.controllers.Posts.Update)
+		posts := adminGroup.Group("/posts")
+		{
+			posts.GET("/", r.controllers.AdminPosts.Index)
+			posts.GET("/new", r.controllers.AdminPosts.New)
+			posts.GET("/show/:id", r.controllers.AdminPosts.Show)
+			posts.GET("/edit/:id", r.controllers.AdminPosts.Edit)
+			posts.POST("/:id", r.controllers.AdminPosts.Update)
+		}
 	}
 }
