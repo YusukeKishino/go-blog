@@ -10,10 +10,7 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/YusukeKishino/go-blog/model"
-)
-
-var (
-	adminKey = "admin"
+	"github.com/YusukeKishino/go-blog/server/middleware"
 )
 
 type LoginController struct {
@@ -46,11 +43,11 @@ func (c *LoginController) Login(ctx *gin.Context) {
 		ctx.HTML(http.StatusUnauthorized, "login.html.tmpl", gin.H{})
 		return
 	} else {
-		session.Set(adminKey, name)
+		session.Set(middleware.AdminKey, name)
 		if err := session.Save(); err != nil {
 			_ = ctx.Error(err)
 			return
 		}
-		ctx.Redirect(http.StatusFound, "/")
+		ctx.Redirect(http.StatusFound, "/admin/posts")
 	}
 }

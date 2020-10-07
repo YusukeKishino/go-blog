@@ -6,11 +6,12 @@ import (
 
 	"github.com/YusukeKishino/go-blog/config"
 	"github.com/YusukeKishino/go-blog/server/controller"
+	"github.com/YusukeKishino/go-blog/server/middleware"
 )
 
 type Controllers struct {
 	dig.In
-	Posts *controller.PostsController
+	Posts *controller.AdminPostsController
 	Login *controller.LoginController
 }
 
@@ -34,7 +35,9 @@ func (r *Router) setRoutes(engine *gin.Engine) {
 
 	engine.GET("/login", r.controllers.Login.Show)
 	engine.POST("/login", r.controllers.Login.Login)
-	posts := engine.Group("/posts")
+
+	adminGroup := engine.Group("/admin", middleware.AuthRequired)
+	posts := adminGroup.Group("/posts")
 	{
 		posts.GET("/", r.controllers.Posts.Index)
 		posts.GET("/new", r.controllers.Posts.New)

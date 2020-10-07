@@ -10,27 +10,27 @@ import (
 	"github.com/YusukeKishino/go-blog/model"
 )
 
-type PostsController struct {
+type AdminPostsController struct {
 	db *gorm.DB
 }
 
-func NewPostsController(db *gorm.DB) *PostsController {
-	return &PostsController{db: db}
+func NewAdminPostsController(db *gorm.DB) *AdminPostsController {
+	return &AdminPostsController{db: db}
 }
 
-func (c *PostsController) Index(ctx *gin.Context) {
+func (c *AdminPostsController) Index(ctx *gin.Context) {
 	var posts []*model.Post
 	if err := c.db.Find(&posts).Order("id DESC").Error; err != nil {
 		_ = ctx.Error(err)
 		return
 	}
 
-	ctx.HTML(http.StatusOK, "posts_index.html.tmpl", gin.H{
+	ctx.HTML(http.StatusOK, "admin_posts_index.html.tmpl", gin.H{
 		"posts": posts,
 	})
 }
 
-func (c *PostsController) Show(ctx *gin.Context) {
+func (c *AdminPostsController) Show(ctx *gin.Context) {
 	id := ctx.Param("id")
 	var post model.Post
 	if err := c.db.First(&post, id).Error; err != nil {
@@ -38,12 +38,12 @@ func (c *PostsController) Show(ctx *gin.Context) {
 		return
 	}
 
-	ctx.HTML(http.StatusOK, "posts_show.html.tmpl", gin.H{
+	ctx.HTML(http.StatusOK, "admin_posts_show.html.tmpl", gin.H{
 		"post": post,
 	})
 }
 
-func (c *PostsController) New(ctx *gin.Context) {
+func (c *AdminPostsController) New(ctx *gin.Context) {
 	post := model.Post{
 		Title:   "タイトル",
 		Content: "",
@@ -53,22 +53,22 @@ func (c *PostsController) New(ctx *gin.Context) {
 		_ = ctx.Error(err)
 		return
 	}
-	ctx.Redirect(http.StatusFound, fmt.Sprintf("/posts/edit/%d", post.ID))
+	ctx.Redirect(http.StatusFound, fmt.Sprintf("/admin/posts/edit/%d", post.ID))
 }
 
-func (c *PostsController) Edit(ctx *gin.Context) {
+func (c *AdminPostsController) Edit(ctx *gin.Context) {
 	id := ctx.Param("id")
 	var post model.Post
 	if err := c.db.First(&post, id).Error; err != nil {
 		_ = ctx.Error(err)
 		return
 	}
-	ctx.HTML(http.StatusOK, "posts_edit.html.tmpl", gin.H{
+	ctx.HTML(http.StatusOK, "admin_posts_edit.html.tmpl", gin.H{
 		"post": post,
 	})
 }
 
-func (c *PostsController) Update(ctx *gin.Context) {
+func (c *AdminPostsController) Update(ctx *gin.Context) {
 	id := ctx.Param("id")
 	title := ctx.PostForm("title")
 	status := ctx.PostForm("status")
@@ -86,5 +86,5 @@ func (c *PostsController) Update(ctx *gin.Context) {
 		return
 	}
 
-	ctx.Redirect(http.StatusFound, fmt.Sprintf("/posts/show/%d", post.ID))
+	ctx.Redirect(http.StatusFound, fmt.Sprintf("/admin/posts/show/%d", post.ID))
 }

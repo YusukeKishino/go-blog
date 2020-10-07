@@ -17,7 +17,7 @@ func BuildContainer() (*dig.Container, error) {
 		newProvider(config.GetConfig),
 		newProvider(db.ConnectDB),
 		newProvider(controller.NewLoginController),
-		newProvider(controller.NewPostsController),
+		newProvider(controller.NewAdminPostsController),
 		newProvider(server.NewRouter),
 		newProvider(server.NewServer),
 	}
