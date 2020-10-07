@@ -1,0 +1,41 @@
+{{ define "subtitle" }}
+  編集
+{{ end }}
+{{ define "content" }}
+  <div class="container">
+    <form action="/posts/{{ .post.ID }}" method="post">
+      <div class="field">
+        <label class="label">投稿のタイトル</label>
+        <div class="control">
+          <input name="title" class="input" type="text" placeholder="Title" value="{{ .post.Title }}">
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">ステータス</label>
+        <div class="control">
+          <div class="select">
+            <select name="status">
+              <option value="draft" {{ if eq .post.Status "draft"}}selected{{ end }}>ドラフト</option>
+              <option value="published" {{ if eq .post.Status "published"}}selected{{ end }}>公開</option>
+              <option value="unpublished" {{ if eq .post.Status "unpublished"}}selected{{ end }}>非公開</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">本文</label>
+        <div class="control">
+          <textarea name="content" class="textarea" placeholder="投稿の本文">{{ .post.Content }}</textarea>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="control">
+          <button type="submit" class="button is-primary">更新</button>
+        </div>
+      </div>
+    </form>
+  </div>
+{{ end }}

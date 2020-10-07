@@ -10,7 +10,6 @@ import (
 	"github.com/go-webpack/webpack"
 	"github.com/sirupsen/logrus"
 	ginlogrus "github.com/toorop/gin-logrus"
-
 	// TODO: Fixme
 	"github.com/YusukeKishino/go-blog/config"
 )
@@ -26,14 +25,14 @@ type Server struct {
 	*gin.Engine
 }
 
-func NewServer() *Server {
+func NewServer(router *Router) *Server {
 	setupWebpack()
 
 	engine := gin.New()
 	engine.Use(ginlogrus.Logger(logrus.StandardLogger()), gin.Recovery())
 	engine.HTMLRender = loadTemplates("server/views")
 
-	setRoutes(engine)
+	router.setRoutes(engine)
 
 	return &Server{Engine: engine}
 }
@@ -59,7 +58,8 @@ func loadTemplates(templatesDir string) multitemplate.Renderer {
 	}
 
 	funcMap := template.FuncMap{
-		"asset": webpack.AssetHelper,
+		"asset":   webpack.AssetHelper,
+		"md2HTML": MD2HTML,
 	}
 
 	// Generate our templates map from our layouts/ and pages/ directories
