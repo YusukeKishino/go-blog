@@ -18,7 +18,7 @@ func ConnectDB(conf *config.AppConfig) (*gorm.DB, error) {
 			AllowGlobalUpdate: false,
 		})
 	if err != nil {
-		return nil, errors.Wrap(err,"failed to connecting database")
+		return nil, errors.Wrap(err, "failed to connecting database")
 	}
 
 	return db, nil
