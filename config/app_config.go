@@ -14,6 +14,7 @@ const Prod = "production"
 
 type AppConfig struct {
 	DBUrl string `yaml:"database_url"`
+	Salt  string `yaml:"salt"`
 }
 
 func GetConfig() (*AppConfig, error) {

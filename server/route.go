@@ -11,6 +11,7 @@ import (
 type Controllers struct {
 	dig.In
 	Posts *controller.PostsController
+	Login *controller.LoginController
 }
 
 type Router struct {
@@ -30,6 +31,9 @@ func (r *Router) setRoutes(engine *gin.Engine) {
 	engine.GET("/", func(c *gin.Context) {
 		c.HTML(200, "index.html.tmpl", gin.H{})
 	})
+
+	engine.GET("/login", r.controllers.Login.Show)
+	engine.POST("/login", r.controllers.Login.Login)
 	posts := engine.Group("/posts")
 	{
 		posts.GET("/", r.controllers.Posts.Index)

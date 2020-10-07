@@ -1,11 +1,13 @@
 package server
 
 import (
+	"crypto/sha256"
 	"html/template"
 	"path/filepath"
 	"time"
 
 	"github.com/gin-contrib/multitemplate"
+	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/go-webpack/webpack"
 	"github.com/sirupsen/logrus"
@@ -25,11 +27,12 @@ type Server struct {
 	*gin.Engine
 }
 
-func NewServer(router *Router) *Server {
+func NewServer(router *Router, conf *config.AppConfig) *Server {
 	setupWebpack()
 
 	engine := gin.New()
 	engine.Use(ginlogrus.Logger(logrus.StandardLogger()), gin.Recovery())
+	engine.Use(sessions.Sessions("go-blog", cookieStore(conf.Salt)))
 	engine.HTMLRender = loadTemplates("server/views")
 
 	router.setRoutes(engine)
@@ -70,4 +73,9 @@ func loadTemplates(templatesDir string) multitemplate.Renderer {
 		r.AddFromFilesFuncs(filepath.Base(include), funcMap, files...)
 	}
 	return r
+}
+
+func cookieStore(salt string) sessions.CookieStore {
+	h := sha256.Sum256([]byte(salt))
+	return sessions.NewCookieStore(h[:])
 }
