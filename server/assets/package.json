@@ -21,6 +21,7 @@
     "webpack-manifest-plugin": "^2.2.0"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.1",
     "bulma": "^0.9.1"
   }
 }

@@ -30,6 +30,7 @@ func (r *Router) setRoutes(engine *gin.Engine) {
 			c.File("server/assets/public/webpack/" + c.Param("name"))
 		})
 	}
+	engine.Static("/images", "./server/assets/src/images")
 	engine.GET("/", func(c *gin.Context) {
 		c.HTML(200, "index.html.tmpl", gin.H{})
 	})

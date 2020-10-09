@@ -19,14 +19,8 @@
             {{ template "content" . }}
         </div>
       </div>
-      <div class="column is-one-quarter is-hidden-mobile">
-        <div class="menu">
-          <p class="menu-label">General</p>
-        </div>
-        <ul class="menu-list">
-          <li><a>Dashboard</a></li>
-          <li><a>Customers</a></li>
-        </ul>
+      <div class="column is-one-quarter">
+        {{ template "sidebar" }}
       </div>
     </div>
   </div>
