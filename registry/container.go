@@ -16,6 +16,7 @@ func BuildContainer() (*dig.Container, error) {
 	providers := []*provider{
 		newProvider(config.GetConfig),
 		newProvider(db.ConnectDB),
+		newProvider(controller.NewIndexController),
 		newProvider(controller.NewLoginController),
 		newProvider(controller.NewAdminPostsController),
 		newProvider(controller.NewPostsController),

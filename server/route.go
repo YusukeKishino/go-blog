@@ -11,6 +11,7 @@ import (
 
 type Controllers struct {
 	dig.In
+	Index      *controller.IndexController
 	AdminPosts *controller.AdminPostsController
 	Posts      *controller.PostsController
 	Login      *controller.LoginController
@@ -31,9 +32,7 @@ func (r *Router) setRoutes(engine *gin.Engine) {
 		})
 	}
 	engine.Static("/images", "./server/assets/src/images")
-	engine.GET("/", func(c *gin.Context) {
-		c.HTML(200, "index.html.tmpl", gin.H{})
-	})
+	engine.GET("/", r.controllers.Index.Index)
 	posts := engine.Group("/posts")
 	{
 		posts.GET("/", r.controllers.Posts.Index)

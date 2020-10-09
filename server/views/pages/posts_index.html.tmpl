@@ -3,20 +3,6 @@
 {{ end }}
 {{ define "content" }}
   <div class="container">
-    <div class="columns is-multiline is-tablet">
-        {{ range $i, $post := .posts }}
-          <div class="column is-6">
-            <div class="card">
-              <div class="card-content">
-                <p class="subtitle is-5"><a href="/posts/show/{{ $post.ID }}">{{ $post.Title }}</a></p>
-                <p class="has-text-left">
-                  <span class="icon"><i class="far fa-calendar"></i></span>{{ $post.UpdatedAt.Format "2006-01-02" }}
-                </p>
-                <p>{{ maxLength $post.Content 100 }}</p>
-              </div>
-            </div>
-          </div>
-        {{ end }}
-    </div>
+    {{ template "_posts" . }}
   </div>
 {{ end }}
