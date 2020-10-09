@@ -61,8 +61,9 @@ func loadTemplates(templatesDir string) multitemplate.Renderer {
 	}
 
 	funcMap := template.FuncMap{
-		"asset":   webpack.AssetHelper,
-		"md2HTML": MD2HTML,
+		"asset":     webpack.AssetHelper,
+		"md2HTML":   MD2HTML,
+		"maxLength": MaxLength,
 	}
 
 	// Generate our templates map from our layouts/ and pages/ directories

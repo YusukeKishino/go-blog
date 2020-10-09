@@ -3,6 +3,7 @@ package server
 import (
 	"html/template"
 	"regexp"
+	"strings"
 
 	"github.com/gomarkdown/markdown"
 	"github.com/gomarkdown/markdown/html"
@@ -27,4 +28,11 @@ func renderer() markdown.Renderer {
 		Flags: html.CommonFlags | html.HrefTargetBlank,
 	}
 	return html.NewRenderer(opts)
+}
+
+func MaxLength(str string, length int) template.HTML {
+	if len(strings.Split(str, "")) >= length {
+		str = string([]rune(str)[:length]) + "..."
+	}
+	return template.HTML(str)
 }
