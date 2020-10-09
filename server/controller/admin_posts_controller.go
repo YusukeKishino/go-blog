@@ -20,7 +20,7 @@ func NewAdminPostsController(db *gorm.DB) *AdminPostsController {
 
 func (c *AdminPostsController) Index(ctx *gin.Context) {
 	var posts []*model.Post
-	if err := c.db.Find(&posts).Order("id DESC").Error; err != nil {
+	if err := c.db.Order("id DESC").Find(&posts).Error; err != nil {
 		_ = ctx.Error(err)
 		return
 	}
