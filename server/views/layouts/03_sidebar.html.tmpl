@@ -1,12 +1,23 @@
 {{ define "sidebar" }}
   <div class="card">
-    <div class="card-image">
-      <img src="/images/profile.jpeg" alt="YusukeKishino" >
-    </div>
+    <header class="card-header">
+      <p class="card-header-title">
+        About me
+      </p>
+    </header>
     <div class="card-content">
-      <p class="subtitle is-7">Author</p>
-      <p class="title is-6">Yusuke Kishino</p>
-      <p>サーバーサイドをメインに開発しています<br>Go/Ruby/PHP</p>
+      <div class="media">
+        <div class="media-left">
+          <figure class="image is-48x48">
+            <img src="/images/profile.jpeg" alt="YusukeKishino" >
+          </figure>
+        </div>
+        <div class="media-content">
+          <p class="subtitle is-7">Author</p>
+          <p class="title is-6">Yusuke Kishino</p>
+        </div>
+      </div>
+      <p>サーバーサイドをメインに開発しています<br>Go / Ruby / PHP</p>
       <div class="columns">
         <div class="column">
           <a href="https://twitter.com/YusukeKishino">
@@ -14,7 +25,7 @@
           </a>
         </div>
         <div class="column">
-          <a href="https://twitter.com/YusukeKishino">
+          <a href="https://github.com/YusukeKishino">
             <p><span class="icon"><i class="fab fa-github"></i></span>GitHub</p>
           </a>
         </div>
