@@ -1,6 +1,8 @@
 package server
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"go.uber.org/dig"
 
@@ -31,6 +33,9 @@ func (r *Router) setRoutes(engine *gin.Engine) {
 			c.File("server/assets/public/webpack/" + c.Param("name"))
 		})
 	}
+	engine.NoRoute(func(ctx *gin.Context) {
+		ctx.HTML(http.StatusNotFound, "404.html.tmpl", gin.H{})
+	})
 	engine.Static("/images", "./server/assets/src/images")
 	engine.GET("/", r.controllers.Index.Index)
 	posts := engine.Group("/posts")

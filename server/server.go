@@ -14,6 +14,7 @@ import (
 	ginlogrus "github.com/toorop/gin-logrus"
 	// TODO: Fixme
 	"github.com/YusukeKishino/go-blog/config"
+	"github.com/YusukeKishino/go-blog/server/middleware"
 )
 
 func init() {
@@ -31,7 +32,7 @@ func NewServer(router *Router, conf *config.AppConfig) *Server {
 	setupWebpack()
 
 	engine := gin.New()
-	engine.Use(ginlogrus.Logger(logrus.StandardLogger()), gin.Recovery())
+	engine.Use(ginlogrus.Logger(logrus.StandardLogger()), middleware.ErrorHandler, gin.Recovery())
 	engine.Use(sessions.Sessions("go-blog", cookieStore(conf.Salt)))
 	engine.HTMLRender = loadTemplates("server/views")
 
