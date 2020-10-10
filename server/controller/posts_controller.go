@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -15,12 +14,13 @@ type PostsController struct {
 }
 
 func NewPostsController(db *gorm.DB) *PostsController {
+	db = db.Scopes(published)
 	return &PostsController{db: db}
 }
 
 func (c *PostsController) Index(ctx *gin.Context) {
 	var posts []*model.Post
-	if err := c.db.Order("id DESC").Where("status = ?", model.Published).Find(&posts).Error; err != nil {
+	if err := c.db.Order("published_at DESC").Find(&posts).Error; err != nil {
 		_ = ctx.Error(err)
 		return
 	}
@@ -33,7 +33,7 @@ func (c *PostsController) Index(ctx *gin.Context) {
 func (c *PostsController) Show(ctx *gin.Context) {
 	id := ctx.Param("id")
 	var post model.Post
-	if err := c.db.First(&post, id).Error; err != nil {
+	if err := c.db.Where("status = ?", model.Published).First(&post, id).Error; err != nil {
 		_ = ctx.Error(err)
 		return
 	}
@@ -43,15 +43,6 @@ func (c *PostsController) Show(ctx *gin.Context) {
 	})
 }
 
-func (c *PostsController) New(ctx *gin.Context) {
-	post := model.Post{
-		Title:   "タイトル",
-		Content: "",
-		Status:  model.Draft,
-	}
-	if err := c.db.Create(&post).Error; err != nil {
-		_ = ctx.Error(err)
-		return
-	}
-	ctx.Redirect(http.StatusFound, fmt.Sprintf("/admin/posts/edit/%d", post.ID))
+func published(db *gorm.DB) *gorm.DB {
+	return db.Where("posts.status = ?", model.Published)
 }
