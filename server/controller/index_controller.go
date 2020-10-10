@@ -14,7 +14,7 @@ type IndexController struct {
 }
 
 func NewIndexController(db *gorm.DB) *IndexController {
-	db.Scopes(published)
+	db = db.Scopes(published)
 	return &IndexController{db: db}
 }
 
