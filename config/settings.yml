@@ -7,5 +7,5 @@ test:
   salt: secret
 
 production:
-  url: ${DATABASE_URL}
+  database_url: ${DATABASE_URL}
   salt: ${SECRET_SALT}
