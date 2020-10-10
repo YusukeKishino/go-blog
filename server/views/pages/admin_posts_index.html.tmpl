@@ -2,6 +2,7 @@
   投稿一覧
 {{ end }}
 {{ define "content" }}
+  <!--suppress ALL -->
   <div class="container">
     <a href="/admin/posts/new"><button class="button is-primary" type="button">新規作成</button></a>
     <table class="table">
@@ -11,6 +12,7 @@
           <th>Title</th>
           <th>CreatedAt</th>
           <th>UpdatedAt</th>
+          <th>PublishedAt</th>
           <th></th>
         </tr>
         </thead>
@@ -20,6 +22,7 @@
             <td><a href="/admin/posts/show/{{ $post.ID }}">{{ $post.Title }}</a></td>
             <td>{{ $post.CreatedAt.Format "2006-01-02 15:04:06" }}</td>
             <td>{{ $post.UpdatedAt.Format "2006-01-02 15:04:06" }}</td>
+            <td>{{ if $post.IsPublished }}{{ $post.PublishedAt.Time.Format "2006-01-02 15:04:06" }}{{ end }}</td>
             <td><a href="/admin/posts/edit/{{ $post.ID }}">Edit</a></td>
           </tr>
         {{ end }}

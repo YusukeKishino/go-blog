@@ -3,6 +3,7 @@
 {{ end }}
 {{ define "content" }}
   <div class="container content">
+    <p><span class="icon"><i class="far fa-calendar"></i></span>{{ .post.PublishedAt.Time.Format "2006-01-02" }}</p>
     {{ md2HTML .post.Content }}
   </div>
 {{ end }}

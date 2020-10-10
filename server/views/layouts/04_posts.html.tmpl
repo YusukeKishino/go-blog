@@ -6,7 +6,7 @@
             <div class="card-content">
               <p class="subtitle is-5"><a href="/posts/show/{{ $post.ID }}">{{ $post.Title }}</a></p>
               <p class="has-text-left">
-                <span class="icon"><i class="far fa-calendar"></i></span>{{ $post.UpdatedAt.Format "2006-01-02" }}
+                <span class="icon"><i class="far fa-calendar"></i></span>{{ $post.PublishedAt.Time.Format "2006-01-02" }}
               </p>
               <p>{{ maxLength $post.Content 100 }}</p>
             </div>

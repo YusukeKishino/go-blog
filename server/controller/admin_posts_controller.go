@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -81,6 +82,11 @@ func (c *AdminPostsController) Update(ctx *gin.Context) {
 	post.Title = title
 	post.Status = model.PostStatus(status)
 	post.Content = content
+
+	if post.IsPublished() && !post.PublishedAt.Valid {
+		post.PublishedAt.Valid = true
+		post.PublishedAt.Time = time.Now()
+	}
 	if err := c.db.Save(&post).Error; err != nil {
 		_ = ctx.Error(err)
 		return
