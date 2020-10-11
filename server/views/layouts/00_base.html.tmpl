@@ -8,7 +8,7 @@
     {{ asset "application.js" }}
     {{ asset "application.css" }}
   <link rel="icon" href="/images/favicon.ico">
-  <title>GoでBlogを作るBlog</title>
+  <title>{{ block "title" . }}GoでBlogを作るBlog{{ end }}</title>
 </head>
 <body>
 {{ template "header" . }}
@@ -17,7 +17,7 @@
     <div class="columns">
       <div class="column">
         <div class="container">
-          <h2 class="title">{{ template "subtitle" . }}</h2>
+          <h2 class="title">{{ block "subtitle" . }}{{ end }}</h2>
             {{ template "content" . }}
         </div>
       </div>
