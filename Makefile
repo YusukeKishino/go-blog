@@ -27,7 +27,35 @@ webpack-dev-server:
 build:
 	go build cmd/server/*.go
 
+.PHONY: build-migrate
+build-migrate:
+	go build -o migrate cmd/migrate/main.go
+
 .PHONY: build-webpack
 build-webpack:
 	cd server/assets && \
 	npm run build
+
+.PHONY: docker-build
+docker-build:
+	docker build --target go-blog -t go-blog .
+	docker tag go-blog:latest ${AWS_CONTAINER_REPOSITORY_URL}
+
+.PHONY: docker-login
+docker-login:
+	aws ecr get-login-password | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+
+.PHONY: docker-push
+docker-push:
+	docker push ${AWS_CONTAINER_REPOSITORY_URL}
+
+.PHONY: update-service
+update-service:
+	aws ecs update-service --region ${AWS_REGION} --cluser ${AWS_ECS_CLUSTER} --service ${AWS_ECS_SERVICE} --force-new-deployment
+
+.PHONY: wait-stable
+wait-stable:
+	aws ecs wait service-stable --region ${AWS_REGION} --cluster ${AWS_ECS_CLUSTER} ${AWS_ECS_SERVICE}
+
+.PHONY: deploy
+deploy: docker-build docker-login docker-push update-service wait-stable

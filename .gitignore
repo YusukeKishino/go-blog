@@ -24,3 +24,6 @@ gin-bin
 # assets
 server/assets/node_modules
 server/assets/public
+
+# Secrets
+.envrc
