@@ -16,6 +16,7 @@ var (
 
 func main() {
 	flag.StringVar(&addr, "a", ":8080", "address to use")
+	flag.Parse()
 
 	container, err := registry.BuildContainer()
 	if err != nil {
