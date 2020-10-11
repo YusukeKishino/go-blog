@@ -51,11 +51,11 @@ docker-push:
 
 .PHONY: update-service
 update-service:
-	aws ecs update-service --region ${AWS_REGION} --cluser ${AWS_ECS_CLUSTER} --service ${AWS_ECS_SERVICE} --force-new-deployment
+	aws ecs update-service --region ${AWS_REGION} --cluster ${AWS_ECS_CLUSTER} --service ${AWS_ECS_SERVICE} --force-new-deployment
 
 .PHONY: wait-stable
 wait-stable:
-	aws ecs wait service-stable --region ${AWS_REGION} --cluster ${AWS_ECS_CLUSTER} ${AWS_ECS_SERVICE}
+	aws ecs wait services-stable --region ${AWS_REGION} --cluster ${AWS_ECS_CLUSTER} --services ${AWS_ECS_SERVICE}
 
 .PHONY: deploy
 deploy: docker-build docker-login docker-push update-service wait-stable
