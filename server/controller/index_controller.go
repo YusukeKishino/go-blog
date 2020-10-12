@@ -14,13 +14,12 @@ type IndexController struct {
 }
 
 func NewIndexController(db *gorm.DB) *IndexController {
-	db = db.Scopes(published)
 	return &IndexController{db: db}
 }
 
 func (c *IndexController) Index(ctx *gin.Context) {
 	var posts []*model.Post
-	if err := c.db.Order("id DESC").Find(&posts).Error; err != nil {
+	if err := c.db.Scopes(published).Order("id DESC").Find(&posts).Error; err != nil {
 		_ = ctx.Error(err)
 		return
 	}
