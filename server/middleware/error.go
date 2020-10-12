@@ -13,6 +13,10 @@ func ErrorHandler(c *gin.Context) {
 
 	err := c.Errors.Last()
 	if err != nil {
+		// すでにステータスコードが指定されていれば何もしない
+		if c.Writer.Status() != 0 {
+			return
+		}
 		cause := errors.Cause(err.Err)
 		if errors.Is(cause, gorm.ErrRecordNotFound) {
 			c.HTML(http.StatusNotFound, "404.html.tmpl", gin.H{})

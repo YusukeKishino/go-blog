@@ -31,7 +31,7 @@ func (c *LoginController) Login(ctx *gin.Context) {
 	formPassword := ctx.PostForm("password")
 
 	var admin model.Admin
-	if err := c.db.First(&admin, model.Admin{Name: name}).Error; err != nil {
+	if err := c.db.Where("name = ?", name).First(&admin).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			ctx.HTML(http.StatusUnauthorized, "login.html.tmpl", gin.H{})
 			return

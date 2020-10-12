@@ -1,9 +1,12 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/pkg/errors"
 	"gorm.io/gorm"
 
 	"github.com/YusukeKishino/go-blog/model"
@@ -30,7 +33,13 @@ func (c *PostsController) Index(ctx *gin.Context) {
 }
 
 func (c *PostsController) Show(ctx *gin.Context) {
-	id := ctx.Param("id")
+	idParam := ctx.Param("id")
+	id, err := strconv.Atoi(idParam)
+	if err != nil {
+		_ = ctx.AbortWithError(http.StatusBadRequest, errors.Wrap(err, fmt.Sprintf("failed to convert %s to int", idParam)))
+		return
+	}
+
 	var post model.Post
 	if err := c.db.Scopes(published).First(&post, id).Error; err != nil {
 		_ = ctx.Error(err)
