@@ -24,9 +24,9 @@ func (c *PostsController) Index(ctx *gin.Context) {
 		return
 	}
 
-	ctx.HTML(http.StatusOK, "posts_index.html.tmpl", gin.H{
+	ctx.HTML(http.StatusOK, "posts_index.html.tmpl", h(ctx, gin.H{
 		"posts": posts,
-	})
+	}))
 }
 
 func (c *PostsController) Show(ctx *gin.Context) {
@@ -37,9 +37,9 @@ func (c *PostsController) Show(ctx *gin.Context) {
 		return
 	}
 
-	ctx.HTML(http.StatusOK, "posts_show.html.tmpl", gin.H{
+	ctx.HTML(http.StatusOK, "posts_show.html.tmpl", h(ctx, gin.H{
 		"post": post,
-	})
+	}))
 }
 
 func published(db *gorm.DB) *gorm.DB {

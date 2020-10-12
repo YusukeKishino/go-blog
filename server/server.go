@@ -33,7 +33,7 @@ func NewServer(router *Router, conf *config.AppConfig) *Server {
 
 	engine := gin.New()
 	engine.Use(ginlogrus.Logger(logrus.StandardLogger()), middleware.ErrorHandler, gin.Recovery())
-	engine.Use(sessions.Sessions("go-blog", cookieStore(conf.Salt)))
+	engine.Use(sessions.Sessions("go-blog", cookieStore(conf.Salt)), middleware.Auth)
 	engine.HTMLRender = loadTemplates("server/views")
 
 	router.setRoutes(engine)

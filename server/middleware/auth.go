@@ -11,11 +11,17 @@ var (
 	AdminKey = "admin"
 )
 
-func AuthRequired(c *gin.Context) {
+func Auth(c *gin.Context) {
 	session := sessions.Default(c)
 	admin := session.Get(AdminKey)
+	if admin != nil {
+		c.Set(AdminKey, admin)
+	}
+	c.Next()
+}
 
-	if admin == nil {
+func AuthRequired(c *gin.Context) {
+	if c.GetString(AdminKey) == "" {
 		c.AbortWithStatus(http.StatusUnauthorized)
 		return
 	}

@@ -34,6 +34,12 @@
   </div>
   <hr>
   <aside class="menu">
+    {{ if .admin }}
+      <p class="menu-label">管理者Menu</p>
+      <ul class="menu-list">
+        <li><a href="/admin/posts">投稿一覧</a></li>
+      </ul>
+    {{ end }}
     <p class="menu-label">Menu</p>
     <ul class="menu-list">
       <li><a href="/posts">投稿一覧</a></li>
