@@ -14,13 +14,12 @@ type PostsController struct {
 }
 
 func NewPostsController(db *gorm.DB) *PostsController {
-	db = db.Scopes(published)
 	return &PostsController{db: db}
 }
 
 func (c *PostsController) Index(ctx *gin.Context) {
 	var posts []*model.Post
-	if err := c.db.Order("published_at DESC").Find(&posts).Error; err != nil {
+	if err := c.db.Scopes(published).Order("published_at DESC").Find(&posts).Error; err != nil {
 		_ = ctx.Error(err)
 		return
 	}
@@ -33,7 +32,7 @@ func (c *PostsController) Index(ctx *gin.Context) {
 func (c *PostsController) Show(ctx *gin.Context) {
 	id := ctx.Param("id")
 	var post model.Post
-	if err := c.db.Where("status = ?", model.Published).First(&post, id).Error; err != nil {
+	if err := c.db.Scopes(published).First(&post, id).Error; err != nil {
 		_ = ctx.Error(err)
 		return
 	}
