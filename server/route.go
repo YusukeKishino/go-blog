@@ -13,10 +13,11 @@ import (
 
 type Controllers struct {
 	dig.In
-	Index      *controller.IndexController
-	AdminPosts *controller.AdminPostsController
-	Posts      *controller.PostsController
-	Login      *controller.LoginController
+	Index       *controller.IndexController
+	AdminPosts  *controller.AdminPostsController
+	AdminImages *controller.AdminImagesController
+	Posts       *controller.PostsController
+	Login       *controller.LoginController
 }
 
 type Router struct {
@@ -49,6 +50,10 @@ func (r *Router) setRoutes(engine *gin.Engine) {
 
 	adminGroup := engine.Group("/admin", middleware.AuthRequired)
 	{
+		images := adminGroup.Group("/images")
+		{
+			images.POST("/", r.controllers.AdminImages.Upload)
+		}
 		posts := adminGroup.Group("/posts")
 		{
 			posts.GET("/", r.controllers.AdminPosts.Index)
