@@ -3,7 +3,7 @@ package registry
 import (
 	"go.uber.org/dig"
 
-	// TODO: Fixme
+	"github.com/YusukeKishino/go-blog/client"
 	"github.com/YusukeKishino/go-blog/config"
 	"github.com/YusukeKishino/go-blog/db"
 	"github.com/YusukeKishino/go-blog/server"
@@ -16,6 +16,7 @@ func BuildContainer() (*dig.Container, error) {
 	providers := []*provider{
 		newProvider(config.GetConfig),
 		newProvider(db.ConnectDB),
+		newProvider(client.NewS3Client),
 		newProvider(controller.NewIndexController),
 		newProvider(controller.NewLoginController),
 		newProvider(controller.NewAdminImagesController),
