@@ -50,7 +50,8 @@ func (r *Router) setRoutes(engine *gin.Engine) {
 
 	adminGroup := engine.Group("/admin", middleware.AuthRequired)
 	{
-		images := adminGroup.Group("/images")
+		apiV1Group := adminGroup.Group("/api/v1")
+		images := apiV1Group.Group("/images")
 		{
 			images.POST("/", r.controllers.AdminImages.Upload)
 		}
