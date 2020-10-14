@@ -13,8 +13,9 @@ const Test = "test"
 const Prod = "production"
 
 type AppConfig struct {
-	DBUrl string `yaml:"database_url"`
-	Salt  string `yaml:"salt"`
+	DBUrl    string `yaml:"database_url"`
+	Salt     string `yaml:"salt"`
+	S3Bucket string `yaml:"bucket"`
 }
 
 func GetConfig() (*AppConfig, error) {
