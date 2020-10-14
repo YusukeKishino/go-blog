@@ -1,7 +1,6 @@
 package client
 
 import (
-	"fmt"
 	"io"
 	"path/filepath"
 
@@ -34,7 +33,6 @@ func (c *s3Client) Upload(data io.Reader, key string) (string, error) {
 	sess := session.Must(session.NewSession())
 	uploader := s3manager.NewUploader(sess)
 
-	fmt.Println(c.conf)
 	output, err := uploader.Upload(&s3manager.UploadInput{
 		Bucket: aws.String(c.conf.S3Bucket),
 		Key:    aws.String(key),
