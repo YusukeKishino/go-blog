@@ -3,12 +3,14 @@ package controller
 import (
 	"github.com/gin-gonic/gin"
 
+	"github.com/YusukeKishino/go-blog/config"
 	"github.com/YusukeKishino/go-blog/server/middleware"
 )
 
 func h(ctx *gin.Context, h2 gin.H) gin.H {
 	return merge(gin.H{
 		"admin": ctx.GetString(middleware.AdminKey) != "",
+		"isProd": config.IsProd(),
 	}, h2)
 }
 
