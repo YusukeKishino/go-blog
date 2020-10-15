@@ -3,3 +3,4 @@ import '@fortawesome/fontawesome-free/js/all'
 
 import 'js/codehighlight'
 import 'js/upload'
+import 'js/select'
