@@ -20,6 +20,7 @@ type Post struct {
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 	PublishedAt sql.NullTime
+	Tags        []Tag `gorm:"many2many:post_tags"`
 }
 
 func (p *Post) IsPublished() bool {

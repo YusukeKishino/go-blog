@@ -18,7 +18,7 @@ func main() {
 		// Add models to migrate
 		err := db.
 			Set("gorm:table_options", "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4").
-			AutoMigrate(&model.Post{}, &model.Admin{})
+			AutoMigrate(&model.Post{}, &model.Admin{}, &model.Tag{})
 		if err != nil {
 			logrus.Fatalln(err)
 		}
