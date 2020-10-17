@@ -80,8 +80,10 @@ func (c *AdminPostsController) Update(ctx *gin.Context) {
 	title := ctx.PostForm("title")
 	status := ctx.PostForm("status")
 	content := ctx.PostForm("content")
+	tagNames := ctx.PostFormArray("tags[]")
+
 	var post model.Post
-	if err := c.db.First(&post, id).Error; err != nil {
+	if err := c.db.Preload("Tags").First(&post, id).Error; err != nil {
 		_ = ctx.Error(err)
 		return
 	}
@@ -93,10 +95,71 @@ func (c *AdminPostsController) Update(ctx *gin.Context) {
 		post.PublishedAt.Valid = true
 		post.PublishedAt.Time = time.Now()
 	}
-	if err := c.db.Save(&post).Error; err != nil {
+
+	err := c.db.Transaction(func(db *gorm.DB) error {
+		if err := c.deleteTags(db, &post, tagNames); err != nil {
+			return err
+		}
+		if err := c.createNewTags(db, tagNames, &post); err != nil {
+			return err
+		}
+
+		if err := c.db.Save(&post).Error; err != nil {
+			return err
+		}
+		return nil
+	})
+	if err != nil {
 		_ = ctx.Error(err)
 		return
 	}
 
 	ctx.Redirect(http.StatusFound, fmt.Sprintf("/admin/posts/show/%d", post.ID))
+}
+
+func (c *AdminPostsController) deleteTags(db *gorm.DB, post *model.Post, tagNames []string) error {
+	var newTags []model.Tag
+	var deleteTags []model.Tag
+	for _, tag := range post.Tags {
+		found := false
+		for _, tagName := range tagNames {
+			if tag.Name == tagName {
+				newTags = append(newTags, tag)
+				found = true
+				break
+			}
+		}
+		if !found {
+			deleteTags = append(deleteTags, tag)
+		}
+	}
+	post.Tags = newTags
+	if err := db.Model(&post).Association("Tags").Delete(deleteTags); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *AdminPostsController) createNewTags(db *gorm.DB, tagNames []string, post *model.Post) error {
+	var tags, newTags []model.Tag
+	if err := db.Where("name IN ?", tagNames).Find(&tags).Error; err != nil {
+		return err
+	}
+	for _, tagName := range tagNames {
+		found := false
+		for _, tag := range tags {
+			if tagName == tag.Name {
+				found = true
+				newTags = append(newTags, tag)
+				break
+			}
+		}
+		if !found {
+			newTags = append(newTags, model.Tag{
+				Name: tagName,
+			})
+		}
+	}
+	post.Tags = newTags
+	return nil
 }
