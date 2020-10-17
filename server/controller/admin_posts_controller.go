@@ -60,12 +60,18 @@ func (c *AdminPostsController) New(ctx *gin.Context) {
 func (c *AdminPostsController) Edit(ctx *gin.Context) {
 	id := ctx.Param("id")
 	var post model.Post
-	if err := c.db.First(&post, id).Error; err != nil {
+	if err := c.db.Preload("Tags").First(&post, id).Error; err != nil {
+		_ = ctx.Error(err)
+		return
+	}
+	var tags []model.Tag
+	if err := c.db.Order("name").Find(&tags).Error; err != nil {
 		_ = ctx.Error(err)
 		return
 	}
 	ctx.HTML(http.StatusOK, "admin_posts_edit.html.tmpl", h(ctx, gin.H{
 		"post": post,
+		"tags": tags,
 	}))
 }
 

@@ -26,3 +26,12 @@ type Post struct {
 func (p *Post) IsPublished() bool {
 	return p.Status == Published
 }
+
+func (p *Post) HasTag(tag Tag) bool {
+	for _, t := range p.Tags {
+		if t.Name == tag.Name {
+			return true
+		}
+	}
+	return false
+}

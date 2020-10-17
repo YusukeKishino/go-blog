@@ -29,8 +29,9 @@
         <div class="control">
           <div class="select is-fullwidth is-multiple">
             <select name="tags[]" class="select2" multiple="multiple">
-              <option value="あいうえお">あいうえお</option>
-              <option value="カキクケコ">カキクケコ</option>
+              {{ range $i, $tag := .tags }}
+                <option {{ if (toPost $.post).HasTag $tag }}selected{{ end }}>{{ $tag.Name }}</option>
+              {{ end }}
             </select>
           </div>
         </div>
