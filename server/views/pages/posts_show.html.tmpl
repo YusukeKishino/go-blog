@@ -6,6 +6,11 @@
 {{ end }}
 {{ define "content" }}
   <div class="container content">
+    <div class="tags are-medium">
+        {{ range $i, $tag := .post.Tags }}
+          <span class="tag is-info is-light">{{ $tag.Name }}</span>
+        {{ end }}
+    </div>
     <p><span class="icon"><i class="far fa-calendar"></i></span>{{ .post.PublishedAt.Time.Format "2006-01-02" }}</p>
     {{ md2HTML .post.Content }}
   </div>

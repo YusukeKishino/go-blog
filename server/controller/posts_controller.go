@@ -41,7 +41,7 @@ func (c *PostsController) Show(ctx *gin.Context) {
 	}
 
 	var post model.Post
-	if err := c.db.Scopes(published).First(&post, id).Error; err != nil {
+	if err := c.db.Preload("Tags").Scopes(published).First(&post, id).Error; err != nil {
 		_ = ctx.Error(err)
 		return
 	}

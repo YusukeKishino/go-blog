@@ -34,7 +34,7 @@ func (c *AdminPostsController) Index(ctx *gin.Context) {
 func (c *AdminPostsController) Show(ctx *gin.Context) {
 	id := ctx.Param("id")
 	var post model.Post
-	if err := c.db.First(&post, id).Error; err != nil {
+	if err := c.db.Preload("Tags").First(&post, id).Error; err != nil {
 		_ = ctx.Error(err)
 		return
 	}
