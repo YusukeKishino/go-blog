@@ -22,7 +22,7 @@ func NewPostsController(db *gorm.DB) *PostsController {
 
 func (c *PostsController) Index(ctx *gin.Context) {
 	var posts []*model.Post
-	if err := c.db.Scopes(published).Order("published_at DESC").Find(&posts).Error; err != nil {
+	if err := c.db.Preload("Tags").Scopes(published).Order("published_at DESC").Find(&posts).Error; err != nil {
 		_ = ctx.Error(err)
 		return
 	}
