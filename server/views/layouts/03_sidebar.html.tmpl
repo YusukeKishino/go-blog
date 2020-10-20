@@ -48,10 +48,10 @@
     <div class="field is-grouped is-grouped-multiline">
         {{ range $j, $tagCount := .tagCounts }}
           <div class="control">
-            <div class="tags has-addons">
+            <a href="/posts/?tag={{ urlquery $tagCount.Name }}" class="tags has-addons">
               <span class="tag is-info is-light">{{ $tagCount.Name }}</span>
               <span class="tag">{{ $tagCount.Count }}</span>
-            </div>
+            </a>
           </div>
         {{ end }}
     </div>

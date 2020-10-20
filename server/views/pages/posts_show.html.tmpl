@@ -8,7 +8,7 @@
   <div class="container content">
     <div class="tags are-medium">
         {{ range $i, $tag := .post.Tags }}
-          <span class="tag is-info is-light">{{ $tag.Name }}</span>
+          <a href="/posts/?tag={{ urlquery $tag.Name }}" class="tag is-info is-light">{{ $tag.Name }}</a>
         {{ end }}
     </div>
     <p><span class="icon"><i class="far fa-calendar"></i></span>{{ .post.PublishedAt.Time.Format "2006-01-02" }}</p>

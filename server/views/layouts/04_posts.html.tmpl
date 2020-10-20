@@ -7,7 +7,7 @@
               <p class="subtitle is-5"><a href="/posts/show/{{ $post.ID }}">{{ $post.Title }}</a></p>
               <div class="tags">
                   {{ range $j, $tag := $post.Tags }}
-                    <span class="tag is-info is-light">{{ $tag.Name }}</span>
+                    <a href="/posts/?tag={{ urlquery $tag.Name }}" class="tag is-info is-light">{{ $tag.Name }}</a>
                   {{ end }}
               </div>
               <p class="has-text-left">
