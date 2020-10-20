@@ -25,6 +25,19 @@
       </div>
 
       <div class="field">
+        <label class="label">タグ</label>
+        <div class="control">
+          <div class="select is-fullwidth is-multiple">
+            <select name="tags[]" class="select2" multiple="multiple">
+              {{ range $i, $tag := .tags }}
+                <option {{ if (toPost $.post).HasTag $tag }}selected{{ end }}>{{ $tag.Name }}</option>
+              {{ end }}
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
         <label class="label">本文</label>
         <div class="control">
           <textarea id="image-dropzone" name="content" class="textarea" placeholder="投稿の本文" rows="20">{{ .post.Content }}</textarea>

@@ -3,6 +3,11 @@
 {{ end }}
 {{ define "content" }}
   <div class="container content">
+    <div class="tags are-medium">
+      {{ range $i, $tag := .post.Tags }}
+        <span class="tag is-info is-light">{{ $tag.Name }}</span>
+      {{ end }}
+    </div>
     {{ md2HTML .post.Content }}
   </div>
 {{ end }}

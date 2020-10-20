@@ -21,13 +21,20 @@ func NewPostsController(db *gorm.DB) *PostsController {
 }
 
 func (c *PostsController) Index(ctx *gin.Context) {
+	tag := ctx.Query("tag")
+	db := c.db.Preload("Tags").Scopes(published).Order("published_at DESC")
+	if tag != "" {
+		db = db.Joins("JOIN post_tags ON posts.id = post_tags.post_id").
+			Joins("JOIN tags ON tags.id = post_tags.tag_id").
+			Where("tags.name = ?", tag)
+	}
 	var posts []*model.Post
-	if err := c.db.Scopes(published).Order("published_at DESC").Find(&posts).Error; err != nil {
+	if err := db.Find(&posts).Error; err != nil {
 		_ = ctx.Error(err)
 		return
 	}
 
-	ctx.HTML(http.StatusOK, "posts_index.html.tmpl", h(ctx, gin.H{
+	ctx.HTML(http.StatusOK, "posts_index.html.tmpl", h(ctx, c.db, gin.H{
 		"posts": posts,
 	}))
 }
@@ -41,12 +48,12 @@ func (c *PostsController) Show(ctx *gin.Context) {
 	}
 
 	var post model.Post
-	if err := c.db.Scopes(published).First(&post, id).Error; err != nil {
+	if err := c.db.Preload("Tags").Scopes(published).First(&post, id).Error; err != nil {
 		_ = ctx.Error(err)
 		return
 	}
 
-	ctx.HTML(http.StatusOK, "posts_show.html.tmpl", h(ctx, gin.H{
+	ctx.HTML(http.StatusOK, "posts_show.html.tmpl", h(ctx, c.db, gin.H{
 		"post": post,
 	}))
 }

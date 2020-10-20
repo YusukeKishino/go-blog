@@ -1,6 +1,7 @@
 package server
 
 import (
+	"fmt"
 	"html/template"
 	"regexp"
 	"strings"
@@ -8,6 +9,8 @@ import (
 	"github.com/gomarkdown/markdown"
 	"github.com/gomarkdown/markdown/html"
 	"github.com/gomarkdown/markdown/parser"
+
+	"github.com/YusukeKishino/go-blog/model"
 )
 
 var regxNewline = regexp.MustCompile(`\r\n|\r|\n`)
@@ -35,4 +38,12 @@ func MaxLength(str string, length int) template.HTML {
 		str = string([]rune(str)[:length]) + "..."
 	}
 	return template.HTML(str)
+}
+
+func ToPost(i interface{}) (*model.Post, error) {
+	p, ok := i.(model.Post)
+	if !ok {
+		return &model.Post{}, fmt.Errorf("failed to vonvert")
+	}
+	return &p, nil
 }

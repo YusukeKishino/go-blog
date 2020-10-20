@@ -44,6 +44,17 @@
     <ul class="menu-list">
       <li><a href="/posts">投稿一覧</a></li>
     </ul>
+    <p class="menu-label">タグ</p>
+    <div class="field is-grouped is-grouped-multiline">
+        {{ range $j, $tagCount := .tagCounts }}
+          <div class="control">
+            <a href="/posts/?tag={{ urlquery $tagCount.Name }}" class="tags has-addons">
+              <span class="tag is-info is-light">{{ $tagCount.Name }}</span>
+              <span class="tag">{{ $tagCount.Count }}</span>
+            </a>
+          </div>
+        {{ end }}
+    </div>
   </aside>
 
 {{ end }}
