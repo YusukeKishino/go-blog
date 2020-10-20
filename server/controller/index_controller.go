@@ -24,7 +24,7 @@ func (c *IndexController) Index(ctx *gin.Context) {
 		return
 	}
 
-	ctx.HTML(http.StatusOK, "index.html.tmpl", h(ctx, gin.H{
+	ctx.HTML(http.StatusOK, "index.html.tmpl", h(ctx, c.db, gin.H{
 		"posts": posts,
 	}))
 }

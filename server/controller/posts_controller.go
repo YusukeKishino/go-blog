@@ -27,7 +27,7 @@ func (c *PostsController) Index(ctx *gin.Context) {
 		return
 	}
 
-	ctx.HTML(http.StatusOK, "posts_index.html.tmpl", h(ctx, gin.H{
+	ctx.HTML(http.StatusOK, "posts_index.html.tmpl", h(ctx, c.db, gin.H{
 		"posts": posts,
 	}))
 }
@@ -46,7 +46,7 @@ func (c *PostsController) Show(ctx *gin.Context) {
 		return
 	}
 
-	ctx.HTML(http.StatusOK, "posts_show.html.tmpl", h(ctx, gin.H{
+	ctx.HTML(http.StatusOK, "posts_show.html.tmpl", h(ctx, c.db, gin.H{
 		"post": post,
 	}))
 }

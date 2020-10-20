@@ -26,7 +26,7 @@ func (c *AdminPostsController) Index(ctx *gin.Context) {
 		return
 	}
 
-	ctx.HTML(http.StatusOK, "admin_posts_index.html.tmpl", h(ctx, gin.H{
+	ctx.HTML(http.StatusOK, "admin_posts_index.html.tmpl", h(ctx, c.db, gin.H{
 		"posts": posts,
 	}))
 }
@@ -39,7 +39,7 @@ func (c *AdminPostsController) Show(ctx *gin.Context) {
 		return
 	}
 
-	ctx.HTML(http.StatusOK, "admin_posts_show.html.tmpl", h(ctx, gin.H{
+	ctx.HTML(http.StatusOK, "admin_posts_show.html.tmpl", h(ctx, c.db, gin.H{
 		"post": post,
 	}))
 }
@@ -69,7 +69,7 @@ func (c *AdminPostsController) Edit(ctx *gin.Context) {
 		_ = ctx.Error(err)
 		return
 	}
-	ctx.HTML(http.StatusOK, "admin_posts_edit.html.tmpl", h(ctx, gin.H{
+	ctx.HTML(http.StatusOK, "admin_posts_edit.html.tmpl", h(ctx, c.db, gin.H{
 		"post": post,
 		"tags": tags,
 	}))
