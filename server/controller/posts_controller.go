@@ -21,8 +21,15 @@ func NewPostsController(db *gorm.DB) *PostsController {
 }
 
 func (c *PostsController) Index(ctx *gin.Context) {
+	tag := ctx.Query("tag")
+	db := c.db.Preload("Tags").Scopes(published).Order("published_at DESC")
+	if tag != "" {
+		db = db.Joins("JOIN post_tags ON posts.id = post_tags.post_id").
+			Joins("JOIN tags ON tags.id = post_tags.tag_id").
+			Where("tags.name = ?", tag)
+	}
 	var posts []*model.Post
-	if err := c.db.Preload("Tags").Scopes(published).Order("published_at DESC").Find(&posts).Error; err != nil {
+	if err := db.Find(&posts).Error; err != nil {
 		_ = ctx.Error(err)
 		return
 	}
